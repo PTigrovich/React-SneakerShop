@@ -1,29 +1,23 @@
-function Cart() {
+function Cart({onClose, items = [],}) {
 	return (
-        <div style={{ display: 'none' }} className="overlay">
+        <div className="overlay">
             <div className="cart-block">
                 <h2>
-                    Корзина <img className="item__remove" src="/img/btn-remove.svg" alt="remove" />
+                    Корзина <img onClick={onClose} className="item__remove" src="/img/btn-remove.svg" alt="remove" />
                 </h2>
 
                 <div class="cart-block__items">
-                    <div className="cart-block__item">
-                        <img className="item__photo" src="/img/sneakers/1.jpg" alt="sneaker" />
-                        <div className="item__photo_content">
-                            <p className="item__photo_content-text">Мужские Кроссовки Nike Blazer Mid Suede</p>
-                            <b>12 500руб.</b>
-                        </div>
-                        <img className="item__remove" src="/img/btn-remove.svg" alt="remove" />
-                    </div>
-
-                    <div className="cart-block__item">
-                        <img className="item__photo" src="/img/sneakers/2.jpg" alt="sneaker" />
-                        <div className="item__photo_content">
-                            <p className="item__photo_content-text">Мужские Кроссовки Nike Blazer Mid Suede</p>
-                            <b>12 500руб.</b>
-                        </div>
-                        <img className="item__remove" src="/img/btn-remove.svg" alt="remove" />
-                    </div>
+                    {items.map(obj => (
+                        
+                            <div className="cart-block__item">
+                                <img className="item__photo" src={`url(${obj.imageUrl})`} alt="sneaker" />
+                                <div className="item__photo_content">
+                                    <p className="item__photo_content-text">{obj.title}</p>
+                                    <b>{obj.price}.</b>
+                                </div>
+                                <img className="item__remove" src="/img/btn-remove.svg" alt="remove" />
+                            </div>
+                    ))}
                 </div>
 
                 <ul className="cart-block__total">
@@ -47,3 +41,4 @@ function Cart() {
 }
 
 export default Cart;
+
