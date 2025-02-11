@@ -6,29 +6,29 @@ function Cart({ onClose, onRemove, items = [] }) {
                     Корзина <img onClick={onClose} className="item__remove" src="/img/btn-remove.svg" alt="remove" />
                 </h2>
 
-					 
-
-                <div className="cart-block__empty">
-                    <img className="cart-block__empty_logo" src="/img/empty-cart.png" alt="Empty" />
-                    <h2>Корзина пустая</h2>
-                    <p className="cart-block__empty_text">Добавьте хотя бы одну пару кроссовок что бы сделать заказ.</p>
-                    <button className="total__button">
-                        <img src="/img/arrow.svg" alt="Arrow" />
-                    </button>
-                </div>
-
-                <div className="cart-block__items">
-                    {items.map(obj => (
-                        <div key={obj.id} className="cart-block__item">
-                            <img className="item__photo" src={obj.imageUrl} alt="sneaker" />
-                            <div className="item__photo_content">
-                                <p className="item__photo_content-text">{obj.title}</p>
-                                <b>{obj.price} руб.</b>
+                {items.length > 0 ? (
+                    <div className="cart-block__items">
+                        {items.map(obj => (
+                            <div key={obj.id} className="cart-block__item">
+                                <img className="item__photo" src={obj.imageUrl} alt="sneaker" />
+                                <div className="item__photo_content">
+                                    <p className="item__photo_content-text">{obj.title}</p>
+                                    <b>{obj.price} руб.</b>
+                                </div>
+                                <img onClick={() => onRemove(obj.id)} className="item__remove" src="/img/btn-remove.svg" alt="remove" />
                             </div>
-                            <img onClick={() => onRemove(obj.id)} className="item__remove" src="/img/btn-remove.svg" alt="remove" />
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="cart-block__empty">
+                        <img className="cart-block__empty_logo" src="/img/empty-cart.png" alt="Empty" />
+                        <h2>Корзина пустая</h2>
+                        <p className="cart-block__empty_text">Добавьте хотя бы одну пару кроссовок что бы сделать заказ.</p>
+                        <button className="total__button">
+                            <img src="/img/arrow.svg" alt="Arrow" />Вернуться назад
+                        </button>
+                    </div>
+                )}
 
                 <ul className="cart-block__total">
                     <li className="total__sum">
