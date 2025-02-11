@@ -2,12 +2,12 @@ import React from 'react'
 
 
 
-function Card({onFavorite, imageUrl, title, price}) {
+function Card({ title, imageUrl, price, onFavorite, onPlus }) {
     const [isAdded, setIsAdded] = React.useState(false);
 
-    const onPlus = () => {
-		onPlus({title, imageUrl, price});
-      setIsAdded(!isAdded);
+    const onClickPlus = () => {
+        onPlus({ title, imageUrl, price });
+        setIsAdded (!isAdded);
     };
 
     return (
@@ -25,7 +25,7 @@ function Card({onFavorite, imageUrl, title, price}) {
                     <b>{price}</b>
                 </div>
 
-                <img className="card__button-icon" src={isAdded ? '/img/addedcart.svg' : '/img/plus.svg'} alt="plus" onClick={onPlus}></img>
+                <img className="card__button-icon" src={isAdded ? '/img/addedcart.svg' : '/img/plus.svg'} alt="plus" onClick={onClickPlus}></img>
             </div>
         </div>
     );

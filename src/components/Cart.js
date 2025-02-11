@@ -1,22 +1,23 @@
-function Cart({onClose, items = [],}) {
-	return (
+function Cart({ onClose, onRemove, items = [] }) {
+    return (
         <div className="overlay">
             <div className="cart-block">
                 <h2>
                     Корзина <img onClick={onClose} className="item__remove" src="/img/btn-remove.svg" alt="remove" />
                 </h2>
 
-                <div class="cart-block__items">
+					 
+
+                <div className="cart-block__items">
                     {items.map(obj => (
-                        
-                            <div className="cart-block__item">
-                                <img className="item__photo" src={`url(${obj.imageUrl})`} alt="sneaker" />
-                                <div className="item__photo_content">
-                                    <p className="item__photo_content-text">{obj.title}</p>
-                                    <b>{obj.price}.</b>
-                                </div>
-                                <img className="item__remove" src="/img/btn-remove.svg" alt="remove" />
+                        <div key={obj.id} className="cart-block__item">
+                            <img className="item__photo" src={obj.imageUrl} alt="sneaker" />
+                            <div className="item__photo_content">
+                                <p className="item__photo_content-text">{obj.title}</p>
+                                <b>{obj.price} руб.</b>
                             </div>
+                            <img onClick={() => onRemove(obj.id)} className="item__remove" src="/img/btn-remove.svg" alt="remove" />
+                        </div>
                     ))}
                 </div>
 
@@ -41,4 +42,3 @@ function Cart({onClose, items = [],}) {
 }
 
 export default Cart;
-
