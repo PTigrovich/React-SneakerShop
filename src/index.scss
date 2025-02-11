@@ -225,6 +225,45 @@ header {
 			}
 		}
 
+		.cart-block__empty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		flex: 1;
+
+		&_logo{
+			margin-bottom: 20px;
+			width: 120px;
+			height: 120px;
+		}
+
+		&_text{
+			opacity: .6;
+			width: 280px;
+			line-height: 24px;
+		}
+
+		.total__button{
+			width: 245px;
+			margin-top: 20px;
+
+			&:hover {
+				img {
+					transform: rotate(180) translateX(3px);
+				}
+			}
+
+			img {
+				position: relative;
+				top: 1px;
+				transform: rotate(180deg);
+				margin-right: 15px;
+				transition: transform 0.15s ease-in-out;
+			}
+		}
+	}
+
 	&__total {
 		margin-bottom: 40px;
 		

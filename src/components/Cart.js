@@ -8,6 +8,15 @@ function Cart({ onClose, onRemove, items = [] }) {
 
 					 
 
+                <div className="cart-block__empty">
+                    <img className="cart-block__empty_logo" src="/img/empty-cart.png" alt="Empty" />
+                    <h2>Корзина пустая</h2>
+                    <p className="cart-block__empty_text">Добавьте хотя бы одну пару кроссовок что бы сделать заказ.</p>
+                    <button className="total__button">
+                        <img src="/img/arrow.svg" alt="Arrow" />
+                    </button>
+                </div>
+
                 <div className="cart-block__items">
                     {items.map(obj => (
                         <div key={obj.id} className="cart-block__item">
