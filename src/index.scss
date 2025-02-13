@@ -21,10 +21,6 @@ header {
 	padding: 40px;
 	border-bottom: 1px solid #eaeaea;
 
-	img {
-		margin-right: 30px;
-	}
-
 	p {
 		opacity: 5;
 	}
@@ -46,6 +42,7 @@ header {
 	&__shopName {
 		text-transform: uppercase;
 	}
+	
 	.shopLogo {
 		width:40px;
 		height:40px;
@@ -58,10 +55,17 @@ header {
 .headerRight {
 	display: flex;
    list-style-type: none;
+	align-items: center;
+	justify-content: space-around;
+	width: 260px;
 	
-	
+	.userList__invoice{
+			margin-left:15px;
+			
+		}
+
 	&__userList {
-		margin-right: 30px;
+		display: flex;
 		cursor: pointer;
 
 		&__iconCart, &__iconProfile {

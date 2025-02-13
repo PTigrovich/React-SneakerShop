@@ -1,78 +1,102 @@
-import Card from './components/Card';
 import Header from './components/Header';
 import Cart from './components/Cart';
+import Home from './pages/Home';
+import Favorites from './pages/Favorites';
 import React from 'react';
-import axios from 'axios'
-
+import axios from 'axios';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
-	const [items, setItems] = React.useState([]);
-	const [cartItems, setCartItems] = React.useState([]);
-	const [searchValue, setSearchValue] = React.useState('');
-	const [cartOpened, setCartOpened] = React.useState(false);
+    const [items, setItems] = React.useState([]);
+    const [cartItems, setCartItems] = React.useState([]);
+    const [favorites, setFavorites] = React.useState([]);
+    const [searchValue, setSearchValue] = React.useState('');
+    const [cartOpened, setCartOpened] = React.useState(false);
 
-	React.useEffect (() => {
-		// fetch('https://67aa241765ab088ea7e5ca00.mockapi.io/items')
-      //       .then(Response => {
-      //           return Response.json();
-      //       })
-      //       .then(json => {
-      //           setItems(json);
-      //       });
+    React.useEffect(() => {
+        // fetch('https://sneakershop.free.beeceptor.com/items')
+        //       .then(Response => {
+        //           return Response.json();
+        //       })
+        //       .then(json => {
+        //           setItems(json);
+        //       });
 
-				axios.get('https://67aa241765ab088ea7e5ca00.mockapi.io/items').then((res) => {
-					setItems(res.data);
-				});
-				axios.get('https://67aa241765ab088ea7e5ca00.mockapi.io/cart').then(res => {
-               setCartItems(res.data);
-            });
-	},[]);
-
-	const onAddToCart = obj => {
-        axios.post('https://67aa241765ab088ea7e5ca00.mockapi.io/cart', obj).then(res => {
-            setCartItems(prev => [...prev, res.data]);
+        axios.get('https://sneakershop.free.beeceptor.com/items').then(res => {
+            setItems(res.data);
         });
+
+        axios.get('https://sneakershop.free.beeceptor.com/cart').then(res => {
+            setCartItems(res.data);
+        });
+        axios.get('https://sneakershop.free.beeceptor.com/favorite').then(res => {
+            setFavorites(res.data);
+        });
+    }, []);
+
+    const onAddToCart = obj => {
+        try {
+            if (cartItems.find(item => Number(item.id) === Number(obj.id))) {
+                axios.delete(`https://sneakershop.free.beeceptor.com/cart/${obj.id}`);
+                setCartItems(prev => prev.filter(item => Number(item.id) !== Number(item.id)));
+            } else {
+                axios.post('https://sneakershop.free.beeceptor.com/cart', obj).then(res => {
+                    setCartItems(prev => [...prev, res.data]);
+                });
+            }
+        } catch (error) {
+            alert('Не удалось добавить в корзину');
+        }
     };
 
-	const onRemoveItem = (id) => {
-      axios.delete(`https://67aa241765ab088ea7e5ca00.mockapi.io/cart/${id}`);
-        	setCartItems((prev) => prev.filter(item => item.id !== id));
+    const onRemoveItem = id => {
+        axios.delete(`https://sneakershop.free.beeceptor.com/cart/${id}`);
+        setCartItems(prev => prev.filter(item => item.id !== id));
     };
 
-	const onChangeSearchInput = (event) => {
-			setSearchValue(event.target.value);
-	};
+    const onAddToFavorite = async obj => {
+        try {
+            if (favorites.find(favObj => favObj.id === obj.id)) {
+                axios.delete(`https://sneakershop.free.beeceptor.com/favorite/${obj.id}`);
+                setFavorites(prev => prev.filter(item => item.id !== obj.id));
+            } else {
+                const data = await 
+					 axios.post('https://sneakershop.free.beeceptor.com/favorite', obj);
+                setFavorites(prev => [...prev, data.data]);
+            }
+        } catch (error) {
+            alert('Не удалось добавить в Избранное');
+        }
+    };
 
-  return (
-      <div className="wrapper">
-          {cartOpened && <Cart items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem}/>}
-          <Header onClickCart={() => setCartOpened(true)} />
-          <div className="catalog">
-              <div className="search-block">
-                  <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : 'Каталог'}</h1>
-                  <div className="search-block__input">
-                      <img onClick={() => setSearchValue('')} src="/img/search.svg" alt="search" />
-                      <input onChange={onChangeSearchInput} value={searchValue} placeholder="Поиск ..." />
-                  </div>
-              </div>
+    const onChangeSearchInput = event => {
+        setSearchValue(event.target.value);
+    };
 
-              <div className="sneakers">
-                  {items
-                      .filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
-                      .map((item, index) => (
-                          <Card
-                              key={index}
-                              title={item.title}
-                              price={item.price}
-                              imageUrl={item.imageUrl}
-                              onFavorite={() => console.log('Добавили в закладки')}
-                              onPlus={obj => onAddToCart(obj)}
-                          />
-                      ))}
-              </div>
-          </div>
-      </div>
-  );
+    return (
+        <div className="wrapper">
+            {cartOpened && <Cart items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />}
+            <Header onClickCart={() => setCartOpened(true)} />
+
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <Home
+                            items={items}
+                            searchValue={searchValue}
+                            setSearchValue={setSearchValue}
+                            onChangeSearchInput={onChangeSearchInput}
+                            onAddToFavorite={onAddToFavorite}
+                            onAddToCart={onAddToCart}
+                            onRemoveItem={onRemoveItem}
+                        />
+                    }
+                />
+                <Route path="/favorites" element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart} />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
