@@ -1,8 +1,34 @@
 import React from 'react';
-
+import Info from './Info';
+import { AppContext } from '../App';
+import axios from 'axios';
 
 
 function Cart({ onClose, onRemove, items = [] }) {
+	const { cartItems, setCartItems } = React.useContext(AppContext);
+	const [isOrderComplete, setisOrderComplete] = React.useState(false);
+	const [orderId, setOrderId] = React.useState(null);
+	const [isLoading, setisLoading] = React.useState(false);
+
+	const onClickOrder = async () => {
+		try {
+			setisLoading(true);
+			const { data } = await axios.post('https://67aa241765ab088ea7e5ca00.mockapi.io/cart/ordered', {items : cartItems});
+			
+            setOrderId(data.id);
+            setisOrderComplete(true);
+            setCartItems([]);
+
+				for (let i = 0; i < Array.length; i++) {
+					const item = cartItems[i];
+					await axios.delete('https://67aa241765ab088ea7e5ca00.mockapi.io/cart/' + item.id);
+				}
+				
+		} catch (error) {
+		  alert('Ошибка при создании заказа :(')	
+		}
+		setisLoading(false);
+	}
 
 	const totalPrice = items.reduce((sum, obj) => sum + obj.price, 0);
    const tax = totalPrice * 0.13; 
@@ -39,20 +65,20 @@ function Cart({ onClose, onRemove, items = [] }) {
                                 <b>{tax} руб.</b>
                             </li>
                         </ul>
-                        <button className="total__button">
+                        <button disabled={isLoading} onClick={onClickOrder} className="total__button">
                             Оформить заказ <img src="/img/arrow.svg" alt="Arrow" />
                         </button>
                     </>
                 ) : (
-                    <div className="cart-block__empty">
-                        <img className="cart-block__empty_logo" src="/img/empty-cart.png" alt="Empty" />
-                        <h2>Корзина пустая</h2>
-                        <p className="cart-block__empty_text">Добавьте хотя бы одну пару кроссовок что бы сделать заказ.</p>
-                        <button onClick={onClose} className="total__button">
-                            <img src="/img/arrow.svg" alt="Arrow" />
-                            Вернуться назад
-                        </button>
-                    </div>
+                    <Info
+                        title={isOrderComplete ? 'Заказ оформлен!' : 'Корзина пустая'}
+                        description={
+                            isOrderComplete
+                                ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке!`
+                                : 'Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.'
+                        }
+                        image={isOrderComplete ? '/img/compltorder.jpg!' : '/img/empty-cart.jpg'}
+                    />
                 )}
             </div>
         </div>
