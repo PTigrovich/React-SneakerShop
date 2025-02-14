@@ -21,7 +21,7 @@ function Cart({ onClose, onRemove, items = [] }) {
 
 				for (let i = 0; i < Array.length; i++) {
 					const item = cartItems[i];
-					await axios.delete('https://67aa241765ab088ea7e5ca00.mockapi.io/cart/' + item.id);
+					await axios.delete('https://67aa241765ab088ea7e5ca00.mockapi.io/cart' + item.id);
 				}
 				
 		} catch (error) {
@@ -30,7 +30,7 @@ function Cart({ onClose, onRemove, items = [] }) {
 		setisLoading(false);
 	}
 
-	const totalPrice = items.reduce((sum, obj) => sum + obj.price, 0);
+	const totalPrice = cartItems.reduce((sum, obj) => sum + obj.price, 0);
    const tax = totalPrice * 0.13; 
     return (
         <div className="overlay">
@@ -55,7 +55,7 @@ function Cart({ onClose, onRemove, items = [] }) {
                         </div>
                         <ul className="cart-block__total">
                             <li className="total__sum">
-                                <span>Итого:</span>
+                                <span>Итог:</span>
                                 <div></div>
                                 <b>{totalPrice} руб.</b>
                             </li>
@@ -77,7 +77,7 @@ function Cart({ onClose, onRemove, items = [] }) {
                                 ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке!`
                                 : 'Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.'
                         }
-                        image={isOrderComplete ? '/img/compltorder.jpg!' : '/img/empty-cart.jpg'}
+                        image={isOrderComplete ? '/img/compltorder.jpg' : '/img/empty-cart.png'}
                     />
                 )}
             </div>
