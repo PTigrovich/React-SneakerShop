@@ -1,8 +1,11 @@
+import React from 'react';
+
+
+
 function Cart({ onClose, onRemove, items = [] }) {
 
 	const totalPrice = items.reduce((sum, obj) => sum + obj.price, 0);
-   const tax = totalPrice * 0.13;
-
+   const tax = totalPrice * 0.13; 
     return (
         <div className="overlay">
             <div className="cart-block">
