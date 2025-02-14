@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { AppContext } from '../App';
+import { useCart } from './hooks/useCart';
 
 function Header(props) {
-	const {cartItems} = React.useContext(AppContext);
-	const totalPrice = cartItems.reduce((sum, obj) => sum + obj.price, 0);
+	const { totalPrice} = useCart();
     return (
         <header>
             <Link to="/">
@@ -27,9 +26,11 @@ function Header(props) {
                         <img className="userList__iconProfile" alt="favor" src="/img/heart.svg" />
                     </Link>
                 </li>
-                <li>
+                {/* <li>
+						<Link to="/orders">
                     <img className="userList__iconProfile" alt="user" src="/img/user.svg" />
-                </li>
+						   </Link>
+                </li> */}
             </ul>
         </header>
     );

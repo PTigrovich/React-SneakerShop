@@ -1,11 +1,11 @@
 import React from 'react';
 import Info from './Info';
-import { AppContext } from '../App';
 import axios from 'axios';
+import {useCart} from './hooks/useCart'
 
 
 function Cart({ onClose, onRemove, items = [] }) {
-	const { cartItems, setCartItems } = React.useContext(AppContext);
+	const { cartItems, setCartItems, totalPrice, tax} = useCart();
 	const [isOrderComplete, setisOrderComplete] = React.useState(false);
 	const [orderId, setOrderId] = React.useState(null);
 	const [isLoading, setisLoading] = React.useState(false);
@@ -29,9 +29,6 @@ function Cart({ onClose, onRemove, items = [] }) {
 		}
 		setisLoading(false);
 	}
-
-	const totalPrice = cartItems.reduce((sum, obj) => sum + obj.price, 0);
-   const tax = totalPrice * 0.13; 
     return (
         <div className="overlay">
             <div className="cart-block">

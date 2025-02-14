@@ -4,6 +4,10 @@
   	box-sizing: border-box;
 	// border: 1px solid red;
 	font-family: 'Inter', system-ui;
+	text-decoration: none;
+    color: inherit;
+    outline: none; 
+
 }
 body {
   margin: 0;
@@ -24,6 +28,7 @@ header {
 	p {
 		opacity: 5;
 	}
+	
 }
 
 .wrapper {
@@ -32,15 +37,18 @@ header {
 	border-radius: 20px;
 	max-width: 1080px;
 	margin: 50px auto;
-
+	
+	
 }
 
 .headerLeft {
 	display: flex;
 	align-items: center;
+	
 
 	&__shopName {
 		text-transform: uppercase;
+		
 	}
 	
 	.shopLogo {
